@@ -4,3 +4,26 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.android.library) apply false
 }
+
+allprojects {
+    group = "com.alexfu.axiomui"
+    version = "0.1.0"
+
+    plugins.apply("maven-publish")
+
+    afterEvaluate {
+        configure<PublishingExtension> {
+            repositories {
+                maven {
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/alexfu/state")
+                    credentials {
+                        val env = System.getenv()
+                        username = env["GITHUB_ACTOR"]
+                        password = env["GITHUB_TOKEN"]
+                    }
+                }
+            }
+        }
+    }
+}
