@@ -24,4 +24,4 @@ package com.alexfu.axiomui.state
  * In this example, the current `Counter` instance is the receiver,
  * and `copy(...)` produces the next state.
  */
-typealias Action<T> = T.() -> T
+typealias Action<STATE> = STATE.() -> STATE
