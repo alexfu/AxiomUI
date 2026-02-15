@@ -16,7 +16,7 @@ allprojects {
             repositories {
                 maven {
                     name = "GitHubPackages"
-                    url = uri("https://maven.pkg.github.com/alexfu/state")
+                    url = uri("https://maven.pkg.github.com/alexfu/AxiomUI")
                     credentials {
                         val env = System.getenv()
                         username = env["GITHUB_ACTOR"]
