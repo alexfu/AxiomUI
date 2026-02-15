@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "AxiomUI"
 include(":app")
+include(":state")
