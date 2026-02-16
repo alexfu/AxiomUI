@@ -1,4 +1,4 @@
-package com.alexfu.axiomui.command
+package com.alexfu.axiomui.state.loading
 
 /**
  * Represents the lifecycle status of a load operation so the UI can react appropriately.

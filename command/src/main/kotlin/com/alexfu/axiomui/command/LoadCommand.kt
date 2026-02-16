@@ -2,6 +2,7 @@ package com.alexfu.axiomui.command
 
 import com.alexfu.axiomui.state.Action
 import com.alexfu.axiomui.state.Reducer
+import com.alexfu.axiomui.state.loading.LoadState
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -10,10 +11,10 @@ import kotlinx.coroutines.flow.flow
  * A [Command] that performs a load operation and emits [Action]s to update the state
  *
  * This command is intended for long-running I/O work (network, disk, etc.). When invoked, it:
- * - Marks the load as in progress via [LoadState.Loading]
+ * - Marks the load as in progress via [com.alexfu.axiomui.state.loading.LoadState.Loading]
  * - Executes [loadData] using the provided input
- * - On success, marks the load as [LoadState.Success] and applies the loaded [DATA] via [dataReducer]
- * - On failure, marks the load as [LoadState.Error]
+ * - On success, marks the load as [com.alexfu.axiomui.state.loading.LoadState.Success] and applies the loaded [DATA] via [dataReducer]
+ * - On failure, marks the load as [com.alexfu.axiomui.state.loading.LoadState.Error]
  *
  * Cancellation is treated as control flow: if the coroutine is cancelled, the cancellation exception
  * is rethrown rather than being converted into an error state.
