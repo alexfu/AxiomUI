@@ -53,7 +53,8 @@ afterEvaluate {
 }
 
 dependencies {
-    api(project(":state"))
+    implementation(project(":state"))
+    implementation(project(":command"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
