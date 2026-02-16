@@ -7,6 +7,7 @@ import com.alexfu.axiomui.state.Reducer
 import com.alexfu.axiomui.state.Store
 import com.alexfu.axiomui.state.reduceInto
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
@@ -18,8 +19,8 @@ import kotlinx.coroutines.launch
  */
 abstract class AxiomViewModel<STATE: Any>(val store: Store<STATE>) : ViewModel() {
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun <R> runCommandOn(selector: Flow<STATE>.() -> Flow<R>, command: Command<STATE, R>) {
-        store.observe()
+    fun <R> runCommandOn(selector: Flow<STATE>.() -> Flow<R>, command: Command<STATE, R>): Job {
+        return store.observe()
             .let(selector)
             .flatMapLatest { input ->
                  command(input)
@@ -30,9 +31,18 @@ abstract class AxiomViewModel<STATE: Any>(val store: Store<STATE>) : ViewModel()
             .launchIn(viewModelScope)
     }
 
-    fun <T> runCommand(command: Command<STATE, T>, input: T) {
-        viewModelScope.launch {
+    fun <T> runCommand(command: Command<STATE, T>, input: T): Job {
+        return viewModelScope.launch {
             command(input)
+                .collect { action ->
+                    store.update(action)
+                }
+        }
+    }
+
+    fun runCommand(command: Command<STATE, Unit>): Job {
+        return viewModelScope.launch {
+            command.invoke(Unit)
                 .collect { action ->
                     store.update(action)
                 }
