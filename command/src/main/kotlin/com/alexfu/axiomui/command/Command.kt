@@ -18,8 +18,12 @@ import kotlinx.coroutines.flow.Flow
  * success, failure) and completes when the command finishes or is cancelled.
  *
  * @param STATE The type of state that this command affects.
- * @param T The type of input used to start the command (commonly a params object).
+ * @param INPUT The type of input used to start the command (commonly a params object).
  */
-interface Command<STATE, T> {
-    operator fun invoke(input: T): Flow<Action<STATE>>
+interface Command<STATE, INPUT> {
+    operator fun invoke(input: INPUT): Flow<Action<STATE>>
+}
+
+operator fun <STATE> Command<STATE, Unit>.invoke(): Flow<Action<STATE>> {
+    return invoke(Unit)
 }
