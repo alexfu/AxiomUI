@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.flow
  * Cancellation is treated as control flow: if the coroutine is cancelled, the cancellation exception
  * is rethrown rather than being converted into an error state.
  */
-class LoadCommand<STATE, INPUT, DATA>(
+open class LoadCommand<STATE, INPUT, DATA>(
     private val loadData: suspend (INPUT) -> DATA,
-    private val loadStateReducer: Reducer<STATE, LoadState>,
+    private val loadStateReducer: Reducer<STATE, LoadState> = { this },
     private val dataReducer: Reducer<STATE, DATA>
 ) : Command<STATE, INPUT> {
     override fun invoke(input: INPUT): Flow<Action<STATE>> {
