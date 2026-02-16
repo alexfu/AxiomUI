@@ -29,7 +29,10 @@ class LoadCommand<STATE, INPUT, DATA>(
             emit { loadStateReducer(LoadState.Loading) }
             try {
                 val data = loadData(input)
-                emit { dataReducer(loadStateReducer(LoadState.Success), data) }
+                emit {
+                    val state = loadStateReducer(LoadState.Success)
+                    dataReducer(state, data)
+                }
             } catch (error: Throwable) {
                 if (error is CancellationException) throw error
                 emit { loadStateReducer(LoadState.Error(error)) }
