@@ -23,7 +23,7 @@ abstract class AxiomViewModel<STATE: Any>(val store: Store<STATE>) : ViewModel()
         return store.observe()
             .let(selector)
             .flatMapLatest { input ->
-                 command(input)
+                command(input)
             }
             .onEach { action ->
                 store.update(action)
