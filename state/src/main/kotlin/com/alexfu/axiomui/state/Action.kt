@@ -25,3 +25,9 @@ package com.alexfu.axiomui.state
  * and `copy(...)` produces the next state.
  */
 typealias Action<STATE> = STATE.() -> STATE
+
+fun <STATE> compositeAction(actions: List<Action<STATE>>): Action<STATE> {
+    return {
+        actions.fold(this) { prevState, action -> action(prevState) }
+    }
+}

@@ -46,4 +46,15 @@ open class Store<T : Any>(initialState: T) {
     fun update(action: Action<T>) {
         stateFlow.update { state -> action(state) }
     }
+
+    /**
+     * Updates the state by applying the provided [actions] to the current state.
+     *
+     * The action should be pure and return a new state derived from the previous one.
+     *
+     * @param actions A list of functions that transforms the current state into the next state.
+     */
+    fun update(actions: List<Action<T>>) {
+        stateFlow.update(compositeAction(actions))
+    }
 }
