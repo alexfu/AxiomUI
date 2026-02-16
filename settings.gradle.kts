@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "AxiomUI"
 include(":state")
 include(":viewmodel")
+include(":command")
