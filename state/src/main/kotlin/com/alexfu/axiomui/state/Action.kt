@@ -26,6 +26,18 @@ package com.alexfu.axiomui.state
  */
 typealias Action<STATE> = STATE.() -> STATE
 
+/**
+ * Combines multiple [Action]s into a single [Action].
+ *
+ * The returned action applies each action in [actions] from left to right,
+ * passing the result of one action as the input state to the next.
+ *
+ * If [actions] is empty, the returned action behaves as a no-op and returns
+ * the original state unchanged.
+ *
+ * @param actions The ordered list of actions to apply.
+ * @return A single action representing the sequential composition of [actions].
+ */
 fun <STATE> compositeAction(actions: List<Action<STATE>>): Action<STATE> {
     return {
         actions.fold(this) { prevState, action -> action(prevState) }

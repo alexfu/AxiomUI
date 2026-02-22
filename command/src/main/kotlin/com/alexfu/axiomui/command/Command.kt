@@ -16,14 +16,19 @@ import kotlinx.coroutines.flow.Flow
  *
  * The returned flow may emit multiple actions (e.g. start/loading, progress,
  * success, failure) and completes when the command finishes or is cancelled.
- *
- * @param STATE The type of state that this command affects.
- * @param INPUT The type of input used to start the command (commonly a params object).
  */
 interface Command<STATE, INPUT> {
     operator fun invoke(input: INPUT): Flow<Action<STATE>>
 }
 
+/**
+ * Invokes a [Command] that takes no input.
+ *
+ * This is a convenience overload for `Command<STATE, Unit>` so callers can write
+ * `command()` instead of `command(Unit)`.
+ *
+ * @return A [Flow] of state [Action]s emitted by the command.
+ */
 operator fun <STATE> Command<STATE, Unit>.invoke(): Flow<Action<STATE>> {
     return invoke(Unit)
 }
