@@ -32,7 +32,7 @@ abstract class AxiomViewModel<STATE: Any>(val store: Store<STATE>) : ViewModel()
      * @param command Command to execute for each selected input value.
      * @return The launched [Job] tied to [viewModelScope].
      */
-    fun <R> runLatestCommandOn(selector: Flow<STATE>.() -> Flow<R>, command: Command<STATE, R>): Job {
+    fun <R> runLatestCommandOn(selector: (Flow<STATE>) -> Flow<R>, command: Command<STATE, R>): Job {
         return runCommandOn(selector = selector, command = command, mode = LATEST)
     }
 
@@ -47,7 +47,7 @@ abstract class AxiomViewModel<STATE: Any>(val store: Store<STATE>) : ViewModel()
      * @param command Command to execute for each selected input value.
      * @return The launched [Job] tied to [viewModelScope].
      */
-    fun <R> runCommandOn(selector: Flow<STATE>.() -> Flow<R>, command: Command<STATE, R>): Job {
+    fun <R> runCommandOn(selector: (Flow<STATE>) -> Flow<R>, command: Command<STATE, R>): Job {
         return runCommandOn(selector = selector, command = command, mode = CONCAT)
     }
 
@@ -96,7 +96,7 @@ abstract class AxiomViewModel<STATE: Any>(val store: Store<STATE>) : ViewModel()
      * @return The launched [Job] tied to [viewModelScope].
      */
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun <R> runCommandOn(selector: Flow<STATE>.() -> Flow<R>, command: Command<STATE, R>, mode: CommandCollectionMode = CONCAT): Job {
+    private fun <R> runCommandOn(selector: (Flow<STATE>) -> Flow<R>, command: Command<STATE, R>, mode: CommandCollectionMode = CONCAT): Job {
         return store.observe()
             .let(selector)
             .let { flow ->

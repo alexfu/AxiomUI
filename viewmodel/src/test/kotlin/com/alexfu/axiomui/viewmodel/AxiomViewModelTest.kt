@@ -47,8 +47,9 @@ class AxiomViewModelTest {
     @Test
     fun runCommandOn_cancelsPreviousCommandAndAppliesLatestResult() = runTest {
         val job = viewModel.runLatestCommandOn(
-            selector = {
-                map { state -> state.counter }
+            selector = { stateFlow ->
+                stateFlow
+                    .map { state -> state.counter }
                     .distinctUntilChanged()
                     .map { counter ->
                         "command-${counter}"
