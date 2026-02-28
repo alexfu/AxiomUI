@@ -8,7 +8,7 @@ plugins {
 
 allprojects {
     group = "com.alexfu.axiomui"
-    version = "0.3.0"
+    version = "0.3.1"
 
     plugins.apply("maven-publish")
 
