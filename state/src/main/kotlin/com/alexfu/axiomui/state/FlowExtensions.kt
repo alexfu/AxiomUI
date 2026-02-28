@@ -14,9 +14,3 @@ suspend fun <T, STATE: Any> Flow<T>.reduceInto(store: Store<STATE>, reducer: Red
         store.update { reducer(item) }
     }
 }
-
-suspend fun <STATE: Any> Flow<Action<STATE>>.collectInto(store: Store<STATE>) {
-    collect { action ->
-        store.update(action)
-    }
-}
