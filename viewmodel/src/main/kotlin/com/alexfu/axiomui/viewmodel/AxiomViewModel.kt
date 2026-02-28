@@ -124,4 +124,4 @@ abstract class AxiomViewModel<STATE: Any>(val store: Store<STATE>) : ViewModel()
     }
 }
 
-enum class CommandCollectionMode { CONCAT, LATEST }
+private enum class CommandCollectionMode { CONCAT, LATEST }
