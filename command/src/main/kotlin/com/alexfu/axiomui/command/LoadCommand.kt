@@ -1,5 +1,6 @@
 package com.alexfu.axiomui.command
 
+import android.util.Log
 import com.alexfu.axiomui.state.Action
 import com.alexfu.axiomui.state.Reducer
 import com.alexfu.axiomui.state.loading.LoadState
@@ -34,6 +35,7 @@ open class LoadCommand<STATE, INPUT, DATA>(
                     dataReducer(state, data)
                 }
             } catch (error: Throwable) {
+                Log.e("LoadCommand", "Exception occurred when executing load command!", error)
                 if (error is CancellationException) throw error
                 emit { loadStateReducer(LoadState.Error(error)) }
             }
