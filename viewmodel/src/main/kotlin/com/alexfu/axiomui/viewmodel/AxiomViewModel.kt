@@ -13,8 +13,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.subscribeOn
 import kotlinx.coroutines.launch
 
 /**
@@ -100,10 +102,11 @@ abstract class AxiomViewModel<STATE: Any>(val store: Store<STATE>) : ViewModel()
         return store.observe()
             .let(selector)
             .let { flow ->
-                when (mode) {
+                val newFlow = when (mode) {
                     CONCAT -> flow.flatMapConcat { input -> command(input) }
                     LATEST -> flow.flatMapLatest { input -> command(input) }
                 }
+                newFlow.flowOn(Dispatchers.IO)
             }
             .onEach { action ->
                 store.update(action)
